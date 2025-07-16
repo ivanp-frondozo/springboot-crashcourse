@@ -29,4 +29,11 @@ public class HelloWorldController {
     public String greetWithParam(@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
         return "Hello, " + name + "!";
     }
+    @GetMapping("/sum")
+    public String sumWithParam(@RequestParam(value="int1") int int1, @RequestParam(value="int2") int int2) {
+        int sum = int1 + int2;
+        return "The sum of " + int1 + " and " + int2 + " is " + sum + ".";
+    }
 }
+
+
