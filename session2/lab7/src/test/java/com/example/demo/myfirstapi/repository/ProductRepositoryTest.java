@@ -44,4 +44,60 @@ class ProductRepositoryTest {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    void shouldIncreaseRepositorySizeToFourWhenNewProductIsSaved() {
+        repository.save(new Product("Test", 100.0));
+        assertEquals(4, repository.findAll().size());
+    }
+
+    @Test
+    void shouldAssignNonNullIdWhenSavingNewProduct() {
+        Product newProduct = new Product("Test", 100.0);
+        Product saved = repository.save(newProduct);
+        assertNotNull(saved.getId());
+    }
+
+    @Test
+    void shouldPreserveProductNameWhenSavingNewProduct() {
+        Product saved = repository.save(new Product("Test", 100.0));
+        assertEquals("Test", saved.getName());
+    }
+
+    @Test
+    void shouldPreserveIdWhenUpdatingExistingProduct() {
+        Product existing = repository.findAll().get(0);
+        Product updated = new Product(existing.getId(), "Updated", 100.0);
+        Product result = repository.save(updated);
+        assertEquals(existing.getId(), result.getId());
+    }
+
+    @Test
+    void shouldUpdateNameWhenUpdatingExistingProduct() {
+        Product existing = repository.findAll().get(0);
+        Product updated = new Product(existing.getId(), "Updated", 100.0);
+        Product result = repository.save(updated);
+        assertEquals("Updated", result.getName());
+    }
+
+    @Test
+    void shouldUpdatePriceWhenUpdatingExistingProduct() {
+        Product existing = repository.findAll().get(0);
+        Product updated = new Product(existing.getId(), "Updated", 100.0);
+        Product result = repository.save(updated);
+        assertEquals(100.00, result.getPrice());
+    }
+
+    @Test
+    void shouldNotChangeRepositorySizeWhenSavingNonExistingId() {
+        Product fake = new Product(1L, "Fake", 100.0);
+        repository.save(fake);
+        assertEquals(3, repository.findAll().size());
+    }
+
+    @Test
+    void shouldReturnInputProductWhenSavingNonExistingId() {
+        Product fake = new Product(1L, "Fake", 100.0);
+        Product result = repository.save(fake);
+        assertEquals(fake, result);
+    }
 }
