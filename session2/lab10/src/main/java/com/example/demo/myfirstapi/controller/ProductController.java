@@ -2,10 +2,9 @@ package com.example.demo.myfirstapi.controller;
 
 import com.example.demo.myfirstapi.model.Product;
 import com.example.demo.myfirstapi.repository.ProductRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity; // <-- Import this!
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable; // <-- Import this!
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional; // <-- Import this!
@@ -37,5 +36,11 @@ public class ProductController {
             // If not found, return HTTP 404 Not Found
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/products")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Product createProduct(@RequestBody Product newProduct) {
+        return productRepository.save(newProduct);
     }
 }
